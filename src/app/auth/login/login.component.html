@@ -45,7 +45,10 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <button [disabled]="f.invalid" type="submit" class="btn btn-primary submit-btn btn-block">Login</button>
+                  <button [disabled]="f.invalid || loading" type="submit" class="btn btn-primary submit-btn btn-block">
+                    <i *ngIf="loading" class="fa fa-spin fa-sync"></i>
+                    {{ loading ? 'Iniciando...' : 'Login' }}
+                  </button>
                 </div>
                 
                 <div class="text-block text-center my-3">

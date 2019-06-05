@@ -10,13 +10,17 @@ import { map } from 'rxjs/operators';
 import { User } from './user.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AppState } from '../app.reducer';
+import { SetUserAction } from './auth.actions';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor( private afAuth: AngularFireAuth,
+  private userSubscription: Subscription = new Subscription();
+
+  constructor(  private afAuth: AngularFireAuth,
                 private router: Router,
                 private afDB: AngularFirestore,
                 private store: Store<AppState> ) { }
@@ -27,12 +31,13 @@ export class AuthService {
       .subscribe( (fbUser: firebase.User) => {
 
         if ( fbUser ) {
-          this.afDB.doc(`${ fbUser.uid }/usuario`).valueChanges()
-            .subscribe( usuarioObj => {
-
-              console.log(usuarioObj)
-
-            });
+          this.userSubscription = this.afDB.doc(`${ fbUser.uid }/usuario`).valueChanges()
+              .subscribe( (usuarioObj: any) => {
+                const newUser = new User( usuarioObj );
+                this.store.dispatch( new SetUserAction( newUser ) );
+              });
+        } else {
+          this.userSubscription.unsubscribe();
         }
 
       });
@@ -67,7 +72,7 @@ export class AuthService {
 
   }
 
-  login( email:string, password: string ) {
+  login( email: string, password: string ) {
 
     this.store.dispatch( new ActivarLoadingAction() );
 

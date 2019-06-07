@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor( public authService: AuthService,
-                public store: Store<AppState> ) { }
+               public store: Store<AppState> ) { }
 
   ngOnInit() {
 

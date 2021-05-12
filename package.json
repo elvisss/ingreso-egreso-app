@@ -24,7 +24,7 @@
     "@ngrx/store-devtools": "^7.4.0",
     "bootstrap": "^4.3.1",
     "firebase": "^6.1.0",
-    "chart.js": "^2.8.0",
+    "chart.js": "^2.9.4",
     "ng2-charts": "^2.3.0",
     "rxjs": "~6.4.0",
     "sweetalert2": "^8.11.7",
